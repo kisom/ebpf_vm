@@ -193,6 +193,20 @@ add_message(char *msg)
 
 
 static void
+control(int mode)
+{
+	switch (mode) {
+	case 0:
+		sleep(delay);
+		break;
+	default:
+		fprintf(stderr, "[!] unrecognised control mode %d\n", mode);
+		abort();
+	}
+}
+
+
+static void
 run_program(char *path)
 {
 	int	mode = 0;
@@ -208,11 +222,11 @@ run_program(char *path)
 
 	add_message("booting...");
 	print_machine();
+	control(mode);
+
 	while (machine_step(&vm)) {
 		print_machine();
-		if (mode == 0) {
-			sleep(delay);
-		}
+		control(mode);
 	}
 	add_message("execution halted");
 	print_machine();

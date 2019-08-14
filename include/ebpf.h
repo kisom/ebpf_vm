@@ -2,6 +2,10 @@
 #define __LIBEBPF_EBPF_H
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #include <stdlib.h>
 
 
@@ -12,6 +16,10 @@ struct Instr {
 	uint8_t		dst : 4;
 	uint8_t		op;
 };
+
+
+#define STATUS_HALT	0x01
+#define STATUS_ILLE	0x80
 
 
 bool	next_instruction(const uint8_t *src, size_t srclen, struct Instr *instr);
@@ -42,6 +50,8 @@ struct Machine {
 
 	size_t		 cycles;
 	bool		 cont;
+
+	uint8_t		 status;
 };
 
 
@@ -51,5 +61,9 @@ bool	machine_load(struct Machine *m, uint8_t *src, size_t srclen, size_t ramsz);
 bool	machine_load_file(struct Machine *m, const char *path, size_t ramsz);
 bool	machine_step(struct Machine *m);
 
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* __LIBEBPF_H */
