@@ -1,0 +1,25 @@
+.:[ ebpf virtual machine ]:.
+
+so, i don't know what i'm doing, best to start hacking
+
+related work:
+- kam
+- kram
+- except this time i should really write an assembler
+
+what is a vm?
+- text
+- data
+- working memory
+
+example:
+- tank battle!
+  - has hardware
+    - distance sensor
+    - orientation sensor
+    - motor
+    - cannon
+  - how to interact with hardware
+    - registers
+      - only have 6 non-GP registers
+    - need to define ftab for vm?
