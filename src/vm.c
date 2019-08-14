@@ -101,7 +101,7 @@ print_register(uint8_t reg)
 	}
 	else if (reg == 16) {
 		printf("| IP:  %17" PRIx64 "  | FP:  %17" PRIx64 "    |\n",
-		       vm.ip, vm.registers[10]);
+		       (uint64_t)vm.ip, vm.registers[10]);
 	}
 }
 
@@ -159,7 +159,7 @@ print_machine()
 	
 	slen = print_instruction(vm.text + vm.ip, vm.textsz - vm.ip);
 	print_padding(' ', slen+8, 52);
-	printf("| Cycle: %17" PRIx64, vm.cycles);
+	printf("| Cycle: %17" PRIx64, (uint64_t)vm.cycles);
 	printf(" |\n");
 
 	print_registers();
