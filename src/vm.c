@@ -24,7 +24,7 @@ char		messages[MAX_MESSAGE_LEN][11];
 uint8_t		message_count = 0;
 int		delay = 1;
 bool		continuous = false;
-bool		quiet = false;
+bool		quick = false;
 
 
 static void
@@ -222,13 +222,13 @@ run_program(char *path)
 	}
 
 	add_message("booting...");
-	if (!quiet) {
+	if (!quick) {
 		print_machine();
 		control(mode);
 	}
 
 	while (machine_step(&vm)) {
-		if (!quiet) {
+		if (!quick) {
 			print_machine();
 			control(mode);
 		}
@@ -246,6 +246,8 @@ usage(FILE *outf, char *argv0, int ex)
 	fprintf(outf, "\tRun the compiled program.\n");
 	fprintf(outf, "\nFlags:\n");
 	fprintf(outf, "\t-c\t\tRun continuously (reset at the end of the instructions)\n");
+	fprintf(outf, "\t-h\t\tPrint this help message\n");
+	fprintf(outf, "\t-q\t\tQuick mode: run the program without showing intermediate steps\n");
 	fprintf(outf, "\t-t delay\tSet the delay in seconds between steps\n");
 	exit(ex);
 }
@@ -266,7 +268,7 @@ main(int argc, char *argv[])
 			usage(stdout, argv0, 0);
 			break;
 		case 'q':
-			quiet = true;
+			quick = true;
 			break;
 		case 't':
 			delay = atoi(optarg);
