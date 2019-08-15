@@ -68,6 +68,8 @@ testProgram1()
 	while (machine_step(&m)) ;
 	assert(m.cycles == 8);
 	assert(registerTest(&m, 6, 0x14));
+
+	machine_destroy(&m);
 }
 
 
