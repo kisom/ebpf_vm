@@ -42,31 +42,6 @@ next_instruction(const uint8_t *src, size_t srclen, struct Instr *instr)
 }
 
 
-
-static void
-machine_add(struct Machine *m, struct Instr *instr)
-{
-	if (OP_ALU_REG(instr->op)) {
-		m->registers[instr->dst] += m->registers[instr->src];
-	}
-	else {
-		m->registers[instr->dst] += instr->imm;
-	}
-}
-
-
-static void
-machine_sub(struct Machine *m, struct Instr *instr)
-{
-	if (OP_ALU_REG(instr->op)) {
-		m->registers[instr->dst] -= m->registers[instr->src];
-	}
-	else {
-		m->registers[instr->dst] -= instr->imm;
-	}
-}
-
-
 #define ALU_ADD		0x0
 #define ALU_SUB		0x1
 #define ALU_MUL		0x2
@@ -152,7 +127,6 @@ machine_alu(struct Machine *m, struct Instr *instr)
 	default:
 		m->status |= (STATUS_HALT|STATUS_ILLE);
 		abort();
-		return;
 	}
 }
 

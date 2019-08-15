@@ -12,4 +12,4 @@ addons:
     - clang
     - cmake
     - pkg-config
-script: "mkdir build && cd build && make check"
+script: "mkdir build && cd build && cmake .. && make check"
