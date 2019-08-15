@@ -337,6 +337,7 @@ machine_init(struct Machine *m, size_t textsz, size_t ramsz)
 	for (int i = 0; i < 16; i++) {
 		m->registers[i] = 0;
 	}
+	m->ip = 0;
 	m->cont = false;
 	m->cycles = 0;
 	m->status = 0;

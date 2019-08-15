@@ -21,6 +21,11 @@ add_library(${PROJECT_NAME} src/ebpf.c include/ebpf.h)
 add_executable(ebpf_vm src/vm.c)
 target_link_libraries(ebpf_vm libebpf)
 
+include(CTest)
+
 add_executable(ebpf_isa_test src/ebpf_test.cc)
 target_link_libraries(ebpf_isa_test libebpf)
-add_test(ebpf_isa_test ebpf_isa_test)
+add_test(NAME ebpf_isa_test COMMAND ebpf_isa_test)
+
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose
+			DEPENDS ebpf_isa_test)
