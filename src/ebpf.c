@@ -107,6 +107,10 @@ machine_alu(struct Machine *m, struct Instr *instr)
 		m->registers[instr->dst] *= rval;
 		break;
 	case ALU_DIV:
+		if (rval == 0) {
+			m->status |= STATUS_HALT|STATUS_DBZ;
+			return;
+		}
 		m->registers[instr->dst] /= rval;
 		break;
 	case ALU_OR:
@@ -125,6 +129,10 @@ machine_alu(struct Machine *m, struct Instr *instr)
 		m->registers[instr->dst] = ~(m->registers[instr->dst]);
 		break;
 	case ALU_MOD:
+		if (rval == 0) {
+			m->status |= STATUS_HALT|STATUS_DBZ;
+			return;
+		}
 		m->registers[instr->dst] %= rval;
 		break;
 	case ALU_XOR:
@@ -171,6 +179,10 @@ machine_alu32(struct Machine *m, struct Instr *instr)
 		lval *= rval;
 		break;
 	case ALU_DIV:
+		if (rval == 0) {
+			m->status |= STATUS_HALT|STATUS_DBZ;
+			return;
+		}
 		lval /= rval;
 		break;
 	case ALU_OR:
@@ -189,6 +201,10 @@ machine_alu32(struct Machine *m, struct Instr *instr)
 		lval = ~(lval);
 		break;
 	case ALU_MOD:
+		if (rval == 0) {
+			m->status |= STATUS_HALT|STATUS_DBZ;
+			return;
+		}
 		lval %= rval;
 		break;
 	case ALU_XOR:
@@ -231,6 +247,7 @@ machine_alu32(struct Machine *m, struct Instr *instr)
 				m->status |= (STATUS_HALT|STATUS_ILLE);
 				return;
 			}
+			return;
 		}
 		else {
 			switch (instr->imm) {
@@ -250,7 +267,7 @@ machine_alu32(struct Machine *m, struct Instr *instr)
 				m->status |= (STATUS_HALT|STATUS_ILLE);
 				return;
 			}
-			break;
+			return;
 		}
 	default:
 		m->status |= (STATUS_HALT|STATUS_ILLE);

@@ -20,6 +20,7 @@ struct Instr {
 
 #define STATUS_HALT	0x01
 #define STATUS_ILLE	0x80
+#define STATUS_DBZ	0x40
 
 
 bool	next_instruction(const uint8_t *src, size_t srclen, struct Instr *instr);

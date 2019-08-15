@@ -3,5 +3,8 @@ ADD	r7	#01
 LSH	r7	#01
 MUL	r6	r7
 LE64	r7
-ARSH32	r7	#1E
+ARSH	r7	#1D
+LSH32	r7	#01
 DIV32	r6	r7
+
+;; r6 -> 0x14

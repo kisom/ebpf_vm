@@ -24,6 +24,7 @@ char		messages[MAX_MESSAGE_LEN][11];
 uint8_t		message_count = 0;
 int		delay = 1;
 bool		continuous = false;
+bool		quiet = false;
 
 
 static void
@@ -221,13 +222,18 @@ run_program(char *path)
 	}
 
 	add_message("booting...");
-	print_machine();
-	control(mode);
-
-	while (machine_step(&vm)) {
+	if (!quiet) {
 		print_machine();
 		control(mode);
 	}
+
+	while (machine_step(&vm)) {
+		if (!quiet) {
+			print_machine();
+			control(mode);
+		}
+	}
+	control(mode);
 	add_message("execution halted");
 	print_machine();
 }
@@ -251,13 +257,16 @@ main(int argc, char *argv[])
 	char	 opt;
 	char	*argv0 = argv[0];
 
-	while ((opt = getopt(argc, argv, "cht:")) != -1) {
+	while ((opt = getopt(argc, argv, "chqt:")) != -1) {
 		switch (opt) {
 		case 'c':
 			continuous = true;
 			break;
 		case 'h':
 			usage(stdout, argv0, 0);
+			break;
+		case 'q':
+			quiet = true;
 			break;
 		case 't':
 			delay = atoi(optarg);
