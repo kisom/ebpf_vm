@@ -6,14 +6,17 @@
 extern "C" {
 #endif /* __cplusplus */
 
+
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 
 struct Instr {
 	uint32_t	imm;
-	uint16_t	off;
-	uint8_t		src : 4;
+	int16_t		off;
 	uint8_t		dst : 4;
+	uint8_t		src : 4;
 	uint8_t		op;
 };
 

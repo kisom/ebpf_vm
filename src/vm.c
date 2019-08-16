@@ -58,7 +58,7 @@ print_instruction(uint8_t *src, size_t srclen)
 		return 0;
 	}
 	assert(name);
-	sprintf(outs, "%s %hhx->%hhx @ %hx #%08" PRIx32, name, instr.src,
+	sprintf(outs, "%s %hhx->%hhx @ %hd #%08" PRIx32, name, instr.src,
 	        instr.dst, instr.off, instr.imm);
 	printf("%s", outs);
 	return strnlen(outs, MAX_INSTR_SLEN);

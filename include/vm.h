@@ -2,13 +2,33 @@
 #define __LIBEBPF_VM_H
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+
 struct OpCode {
 	uint8_t	 op;
-	char	*name; /* generous! */
+	char	*name;
 };
 
 
 struct OpCode	code_table[] = {
+	{0x05, "JA"},
+	{0x15, "JEQI"},
+	{0x1d, "JEQ"},
+	{0x25, "JGTI"},
+	{0x2d, "JGT"},
+	{0x35, "JGEI"},
+	{0x3d, "JGE"},
+	{0xa5, "JLTI"},
+	{0xad, "JLT"},
+	{0xb5, "JLEI"},
+	{0xbd, "JLE"},
+	{0x45, "JSETI"},
+	{0x4d, "JSET"},
+	{0x55, "JNEI"},
+	{0x5d, "JNE"},
 	{0x07, "ADDI"},
 	{0x0f, "ADD"},
 	{0x17, "SUBI"},
@@ -62,6 +82,13 @@ struct OpCode	code_table[] = {
 	{0xd4, "LE"},
 	{0xdc, "BE"},
 };
+
+size_t code_table_len = sizeof(code_table) / sizeof(struct OpCode);
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 
 #endif /* __LIBEBPF_VM_H */

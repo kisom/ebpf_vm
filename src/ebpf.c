@@ -253,6 +253,73 @@ machine_alu32(struct Machine *m, struct Instr *instr)
 }
 
 
+#define BRANCH_JA	0x0
+#define BRANCH_JEQ	0x01
+#define BRANCH_JGT	0x02
+#define BRANCH_JGE	0x03
+#define BRANCH_JLT	0x0a
+#define BRANCH_JLE	0x0b
+#define BRANCH_JSET	0x04
+#define BRANCH_JNE	0x05
+
+
+void
+machine_branch(struct Machine *m, struct Instr *instr)
+{
+	uint64_t	lval = m->registers[instr->dst];
+	uint64_t	rval = instr->imm;
+
+	if (OP_ALU_REG(instr->op)) {
+		rval = m->registers[instr->src];
+	}
+
+	switch (instr->op >> 4) {
+	case BRANCH_JA:
+		break;
+	case BRANCH_JEQ:
+		if (lval != rval) {
+			return;
+		}
+		break;
+	case BRANCH_JGT:
+		if (lval <= rval) {
+			return;
+		}
+		break;
+	case BRANCH_JGE:
+		if (lval < rval) {
+			return;
+		}
+		break;
+	case BRANCH_JLT:
+		if (lval >= rval) {
+			return;
+		}
+		break;
+	case BRANCH_JLE:
+		if (lval > rval) {
+			return;
+		}
+		break;
+	case BRANCH_JSET:
+		if ((lval & rval) == 0) {
+			return;
+		}
+		break;
+	case BRANCH_JNE:
+		if (lval == rval) {
+			return;
+		}
+		break;
+	default:
+		m->status |= (STATUS_HALT|STATUS_ILLE);
+		return;
+	}
+
+	m->ip += instr->off;
+}
+
+
 bool
 machine_step(struct Machine *m)
 {
@@ -272,6 +339,9 @@ machine_step(struct Machine *m)
 		break;
 	case CLS_ALU32:
 		machine_alu32(m, &instr);
+		break;
+	case CLS_BRANCH:
+		machine_branch(m, &instr);
 		break;
 	default:
 		m->status |= (STATUS_HALT|STATUS_ILLE);
